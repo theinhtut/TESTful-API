@@ -65,7 +65,7 @@ MongoDb is connected...
 
 API documentations of all the endpoints are powered by [Swagger](https://swagger.io/). You can go to `http://localhost:3000/docs` to view the full documentations.  
 
-![](imgs/swagger-ui.jpg)
+![](imgs/swagger-ui.JPG)
 
 
 ## Create Your Own MongoDB

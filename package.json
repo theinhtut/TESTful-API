@@ -1,0 +1,22 @@
+{
+  "name": "testful-api",
+  "version": "1.0.0",
+  "description": "RESTful API for testing Internet of Things (IoT) devices devices and prototypes",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [ "RESTful", "API", "IoT", "MongoDB" ],
+  "author": "Thein Htut <theinhtut.dec@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.13",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}

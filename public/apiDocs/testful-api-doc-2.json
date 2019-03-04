@@ -1,0 +1,300 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a simple documentation about TESTful API for IoT Devices. For this sample, you can use the api key `TOKEN` to test.",
+    "version": "1.0.0",
+    "title": "TESTful API",
+    "contact": {
+      "email": "theinhtut.dec@gmail.com"
+    }
+  },
+  "host": "localhost:3000",
+  "basePath": "/api/v1",
+  "tags": [
+    {
+      "name": "Endpoints",
+      "description": "Operations on all availbe endpoint routes"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/v1/users": {
+      "post": {
+        "tags": [
+          "Endpoints"
+        ],
+        "summary": "Create new user",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Create user object, name, email and token(any characters, secret keys)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "token": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "email",
+                "token"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User has been created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                },
+                "token": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "{ message: err }"
+          }
+        }
+      }
+    },
+    "/api/v1/devices/{token}": {
+      "post": {
+        "tags": [
+          "Endpoints"
+        ],
+        "summary": "Create new device",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "User's TOKEN(secret keys)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Create user object, name, email and token(any characters, secret keys)",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "deviceName": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "deviceName"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Device has been created successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "_id": {
+                  "type": "string"
+                },
+                "userId": {
+                  "type": "string"
+                },
+                "deviceName": {
+                  "type": "string"
+                },
+                "deviceURLId": {
+                  "type": "string"
+                },
+                "createdOn": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No valid entry found for provided token"
+          },
+          "500": {
+            "description": "{ message: err }"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Endpoints"
+        ],
+        "summary": "Get user's devices list",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "User's TOKEN(secret keys)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Device Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "devicId": {
+                  "type": "string"
+                },
+                "deviceName": {
+                  "type": "string"
+                },
+                "deviceURLId": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "No valid entry found for provided token"
+          },
+          "500": {
+            "description": "{ message: err }"
+          }
+        }
+      }
+    },
+    "/api/v1/devices/{deviceURLId}/{token}": {
+      "post": {
+        "tags": [
+          "Endpoints"
+        ],
+        "summary": "Send variables to user's device",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "deviceURLId",
+            "in": "path",
+            "description": "User's device name in URL friendly (eg. deviceName: Device X, deviceURLId: device-x)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "token",
+            "in": "path",
+            "description": "User's TOKEN(secret keys)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Request body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "anyVariableName1": {
+                  "type": "string"
+                },
+                "anyVariableName2": {
+                  "type": "integer"
+                },
+                "anyVariableName3": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "message: Successful"
+          },
+          "401": {
+            "description": "No valid entry found for provided token"
+          },
+          "404": {
+            "description": "message: Device Not Found!"
+          },
+          "500": {
+            "description": "{ message: err }"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Endpoints"
+        ],
+        "summary": "Delete device",
+        "description": "",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "description": "User's TOKEN(secret keys)",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "deviceURLId",
+            "in": "path",
+            "description": "Device URL ID (eg. if deviceName: Robi X, then deviceURLId: robi-x)",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Device [YourDeviceURLId] has been deleted"
+          },
+          "401": {
+            "description": "No valid entry found for provided token"
+          },
+          "500": {
+            "description": "{ message: err }"
+          }
+        }
+      }
+    }
+  }
+}
