@@ -138,7 +138,7 @@ router.post('/devices/:deviceURLId/:token', (req, res, next) => {
         // If TOKEN is valid
         if(resultUserFindOne) {
             // Check Device Exist or not
-            Device.findOne({ deviceURLId: deviceURLId, createdBy: resultUserFindOne })
+            Device.findOne({ deviceURLId: deviceURLId, createdBy: resultUserFindOne._id })
             .exec()
             .then(resultDeviceFindOne => {
                 // If Device is Found
