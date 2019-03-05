@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>TESTful API</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+
+<body>
+    <div class="wrapper">
+            <div id="plotly-chart" class="offset"></div>
+    </div>
+    
+    
+    <div class="wrapper">
+            <div id="myDiv" class="offset"></div>
+    </div>
+
+    <!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    <script>
+
+    
+    // var socket = io.connect('http://localhost:3001');
+    // socket.on('news', function (data) {
+    // console.log(data);
+    // socket.emit('my other event', { my: 'data' });
+    // });
+    
+
+
+    var data = [
+    {
+    x: ['2013-11-04 22:23:00', '2013-11-04 22:24:00', '2013-11-04 22:25:00'],
+    y: [1.4, 3.22, 6.56],
+    type: 'scatter'
+    }
+    ];
+
+    Plotly.newPlot('plotly-chart', data);
+
+
+    var data1 = [
+        {
+            x: [],
+            y: [],
+            type: 'scatter'
+        }
+    ];
+
+
+    var response = [];
+    var responseIndexKey;
+    var key0;
+    var key1;
+    var deltaX;
+
+    function fetchAPI() {
+        for(var i=0; i < response.length; i++) {
+            //var i=0;
+            responseIndexKey = response[i];
+            key0 = Object.keys(responseIndexKey)[0];
+            key1 = Object.keys(responseIndexKey)[1];
+            //var value = Object.values(responseIndexKey);
+            
+            //console.log(responseIndexKey[key0]);
+            //console.log(typeof responseIndexKey[key1]);
+
+            data1[0].x.push(responseIndexKey[key0]);
+            data1[0].y.push(responseIndexKey[key1]);
+
+            // console.log('Time: ' + responseIndexKey.key + 'X1: ' + responseIndexKey.value);
+        }
+        console.log('API has been fetched!');
+        Plotly.newPlot('myDiv', data1);
+    }
+
+
+        function updatePlot(){
+            $.ajax({
+                url: "http://localhost:3000/api/v1/testing4",
+                type: "GET",
+                success: function (response) {
+                responseCount = response.length; //7
+                data1Count = data1[0].x.length; //6
+                deltaX = response.length - data1[0].x.length; //0
+                console.log('responseCount: ' + responseCount);
+                console.log('data1Count: ' + data1Count);
+
+                if( responseCount > data1Count ) { // 7 > 6
+                    console.log(response[6]);
+                        // 6: 6<=6
+                        for (var j = data1Count; j <= responseCount-1; j++) {
+                            responseIndexKey = response[j];
+                            key0 = Object.keys(responseIndexKey)[0];
+                            key1 = Object.keys(responseIndexKey)[1];
+
+                            data1[0].x.push(responseIndexKey[key0]);
+                            data1[0].y.push(responseIndexKey[key1]);
+
+                        }
+                        Plotly.newPlot('myDiv', data1);
+                } else {
+                console.log('No Update');
+                }
+                }
+            });
+            
+
+            
+        }
+
+    $.ajax({
+    url: "http://localhost:3000/api/v1/testing4",
+    type: "GET",
+        success: function(result){
+        response = result;
+        
+        //Plotly.newPlot('myDiv', data1);
+        //data1[0].x1.push('2013-11-04 22:23:00');
+        //var myObj = JSON.parse(JSON.stringify(response[0]));
+        //console.log(myObj.val);
+        //var firstKey =  Object.values(response);
+        
+        fetchAPI();
+
+
+        //console.log(data[0].x);
+        // for(var key1 in responseIndexKey) {
+        //         if (responseIndexKey.hasOwnProperty(key1)) {
+        //             console.log(key1 + ' ' + responseIndexKey[key1]);
+        //         }
+        // }
+        //Plotly.newPlot('myDiv', data1);
+        //var responseString = JSON.stringify(response);
+        //var responseJSON = JSON.parse(responseString);
+        //var result = responseJSON[0];
+        //var sampleResult = result.samples;
+
+        //console.log(response.length);
+
+        //document.getElementById('dataField').innerHTML = responseJSON;
+    }
+    });
+    setInterval(updatePlot, 9000); 
+    
+    
+    
+    
+    console.log(data[0]);
+    console.log(data1[0]);
+    
+
+    </script>
+
+
+
+</body>
+</html>
